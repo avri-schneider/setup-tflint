@@ -5,6 +5,10 @@ inputs:
     description: TFLint version to install
     required: false
     default: latest
+  sha256:
+    description: SHA256 hex digest of the TFLint version to install
+    required: true
+    default: bb0a3a6043ea1bcd221fc95d49bac831bb511eb31946ca6a4050983e9e584578
   github_token:
     description: GitHub token - used when getting the latest version of tflint
     required: false

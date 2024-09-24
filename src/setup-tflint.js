@@ -1,6 +1,8 @@
 const os = require('os');
 const path = require('path');
 const fetch = require('node-fetch');
+const fs = require('fs');
+const crypto = require('crypto');
 
 const core = require('@actions/core');
 const io = require('@actions/io');
@@ -35,7 +37,7 @@ function mapOS(osPlatform) {
 function getOctokit() {
   return new Octokit({
     auth: core.getInput('github_token'),
-    request: {fetch}
+    request: { fetch }
   });
 }
 
@@ -54,9 +56,19 @@ async function getTFLintVersion(inputVersion) {
   return inputVersion;
 }
 
-async function downloadCLI(url) {
+async function downloadCLI(url, expectedSha256) {
   core.debug(`Downloading tflint CLI from ${url}`);
   const pathToCLIZip = await tc.downloadTool(url);
+
+  // Verify SHA256 hash
+  const fileBuffer = fs.readFileSync(pathToCLIZip);
+  const actualSha256 = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+
+  if (actualSha256 !== expectedSha256) {
+    core.error(`SHA256 mismatch: expected ${expectedSha256}, got ${actualSha256}`);
+    await io.rmRF(pathToCLIZip); // Delete the file
+    throw new Error('SHA256 hash verification failed. Downloaded binary is not as expected.');
+  }
 
   core.debug('Extracting tflint CLI zip file');
   const pathToCLI = await tc.extractZip(pathToCLIZip);
@@ -102,6 +114,7 @@ async function installWrapper(pathToCLI) {
 async function run() {
   try {
     const inputVersion = core.getInput('tflint_version');
+    const expectedSha256 = core.getInput('sha256');
     const wrapper = core.getInput('tflint_wrapper') === 'true';
     const version = await getTFLintVersion(inputVersion);
     const platform = mapOS(os.platform());
@@ -110,7 +123,7 @@ async function run() {
     core.debug(`Getting download URL for tflint version ${version}: ${platform} ${arch}`);
     const url = `https://github.com/terraform-linters/tflint/releases/download/${version}/tflint_${platform}_${arch}.zip`;
 
-    const pathToCLI = await downloadCLI(url);
+    const pathToCLI = await downloadCLI(url, expectedSha256);
 
     if (wrapper) {
       await installWrapper(pathToCLI);

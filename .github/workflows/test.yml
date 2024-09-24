@@ -79,6 +79,7 @@ jobs:
       with:
         tflint_version: ${{ matrix.tflint_version }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        sha256: bb0a3a6043ea1bcd221fc95d49bac831bb511eb31946ca6a4050983e9e584578
     - name: Validate
       if: matrix.tflint_version != 'latest'
       run: |-

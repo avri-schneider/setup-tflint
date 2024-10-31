@@ -25,6 +25,7 @@ jobs:
     - uses: terraform-linters/setup-tflint@v4
       name: Setup TFLint
       with:
+        expected_sha256: 00112233445566778899001122
         tflint_version: v0.52.0
 
     - name: Show version

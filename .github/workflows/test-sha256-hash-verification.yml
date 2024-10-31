@@ -10,12 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest],
-        expected_sha256: [
-          "bf758ff29b607b3fbc4a3630ea3b39df4afafe3cdb80c6d71fe528feeac2c58e",  # Ubuntu
-          "d47f0aeabc1234567890fedcba0987654321fedcba09876543210ae123456789",  # macOS
-          "5a3b9a1cdef123456789fedcba0987654321fedcba0987654321abcd123456ef"   # Windows
-        ]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v4
       name: Checkout source code

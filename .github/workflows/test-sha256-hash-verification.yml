@@ -24,7 +24,7 @@ jobs:
     - uses: avri-schneider/setup-tflint@test-sha256-hash-verification
       name: Setup TFLint
       with:
-        expected_sha256: "bf758ff29b607b3fbc4a3630ea3b39df4afafe3cdb80c6d71fe528feeac2c58e"
+        expected_sha256: "40f7ee2dbeb8e7cbd5ab7b10912f60eb14aa4fbff62603eeb67fdb5f7cbb794a,bf758ff29b607b3fbc4a3630ea3b39df4afafe3cdb80c6d71fe528feeac2c58e"
         tflint_version: v0.52.0
 
     - name: Show version

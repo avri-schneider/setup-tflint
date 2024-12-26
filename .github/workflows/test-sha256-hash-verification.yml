@@ -1,4 +1,4 @@
-name: Lint
+name: test-sha256-hash-verification
 permissions:
   id-token: write
   contents: read

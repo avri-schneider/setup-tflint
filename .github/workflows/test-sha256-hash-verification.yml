@@ -13,6 +13,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - name: Print Environment Variables
+      run: env
+
     - uses: actions/checkout@v4
       name: Checkout source code
 

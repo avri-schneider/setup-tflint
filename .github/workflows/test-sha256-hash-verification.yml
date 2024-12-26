@@ -10,7 +10,7 @@ on:
 
 jobs:
   tflint:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     strategy:
       matrix:
